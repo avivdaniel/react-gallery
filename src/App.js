@@ -21,20 +21,25 @@ class App extends React.Component {
           albumCategories: data
         })
       })
-      .then(() => {
-        fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${this.state.selectedCategorieId}`)
-          .then(response => response.json())
-          .then(data => {
-            this.setState({ photos: data }, () => {
-              console.log(this.state.photos)
-            })
-          })
+      .then(() => this.getPhotos())
+      .catch(err => console.log(err));
+
+  }
+  getPhotos() {
+    fetch(`https://jsonplaceholder.typicode.com/photos?albumId=${this.state.selectedCategorieId}`)
+      .then(response => response.json())
+      .then(data => {
+        this.setState({ photos: data }, () => {
+          console.log(this.state.photos)
+        })
       })
+      .catch(err => console.log(err));
   }
   changeSelectedCategorie(e) {
     const { value } = e.target;
     console.log(value);
     this.setState({ selectedCategorieId: value });
+    this.getPhotos();
   }
   render() {
     return (
